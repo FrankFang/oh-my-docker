@@ -1,9 +1,9 @@
 FROM alpine:3.14.1
 
-# if you are not in China, remove this line
 ARG not_in_china
 ENV nic=${not_in_china} 
 WORKDIR /tmp
+ENV SHELL /bin/bash
 
 # Speed up for Chinese users
 RUN [ -z "$nic" ] && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
@@ -51,18 +51,18 @@ RUN gem install bundler --version '~>2.2'
 # end 
 
 # Rails
-RUN apk add --no-cache libxml2 libxml2-dev libxml2-utils sqlite-dev tzdata
-# https://github.com/sass/sassc-ruby/issues/189
-# sassc takes too long to install
-# RUN MAKEFLAGS=-j4 gem install sassc --version '2.1.0' -- --disable-march-tune-native
-RUN gem install rails --version '~>6.1'
-RUN [ -z "$nic"] && echo "gem: \"--no-document --verbose\"" > /root/.gemrc
-RUN [ -z "$nic"] && bundle config mirror.https://rubygems.org https://gems.ruby-china.com
-# RUN rails new --skip-sprockets app 
-# WORKDIR /tmp/app 
-# RUN bin/rails webpacker:install 
-# ENTRYPOINT bundle exec puma -p 3000 -e production
-# EXPOSE 3000
+# RUN apk add --no-cache libxml2 libxml2-dev libxml2-utils sqlite-dev tzdata
+# # https://github.com/sass/sassc-ruby/issues/189
+# # sassc takes too long to install
+# # RUN MAKEFLAGS=-j4 gem install sassc --version '2.1.0' -- --disable-march-tune-native
+# RUN gem install rails --version '~>6.1'
+# RUN [ -z "$nic"] && echo "gem: \"--no-document --verbose\"" > /root/.gemrc
+# RUN [ -z "$nic"] && bundle config mirror.https://rubygems.org https://gems.ruby-china.com
+# # RUN rails new --skip-sprockets app 
+# # WORKDIR /tmp/app 
+# # RUN bin/rails webpacker:install 
+# # ENTRYPOINT bundle exec puma -p 3000 -e production
+# # EXPOSE 3000
 # # end
 
 # Rust
