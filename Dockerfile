@@ -64,20 +64,6 @@ RUN apk add --no-cache zsh &&\
     echo 'source /root/.bash_aliases' >> /root/.zshrc
 # end
 
-# Rails
-RUN apk add --no-cache libxml2 libxml2-dev libxml2-utils sqlite-dev tzdata;\
-    apk add postgresql-dev postgresql; 
-# # https://github.com/sass/sassc-ruby/issues/189
-# # sassc takes too long to install
-# # RUN MAKEFLAGS=-j4 gem install sassc --version '2.1.0' -- --disable-march-tune-native
-# RUN gem install rails --version '~>6.1'
-# # RUN rails new --skip-sprockets app 
-# # WORKDIR /tmp/app 
-# # RUN bin/rails webpacker:install 
-# # ENTRYPOINT bundle exec puma -p 3000 -e production
-# # EXPOSE 3000
-# end
-
 
 # Install Go
 ENV GOROOT /usr/lib/go
