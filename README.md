@@ -18,7 +18,18 @@ Oh My Docker
 1. 内置 git / vim / python3 / ruby / gem / bundler / cargo / rustc / zsh / go / node / yarn 等命令
 2. 给国内用户配置了加速镜像
 
+
 ## 常见问题
+
+### 如何添加自己的工具？
+
+你只需要在 my_projects/Dockerfile 中写 
+
+```
+RUN apk add --no-cache XXX
+```
+
+就可以安装任意工具了。
 
 ### 如何连接数据库？
 
