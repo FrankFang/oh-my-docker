@@ -31,11 +31,11 @@ Oh My Docker
 
 1. 新建一个 Docker volume
 2. 在my-projects/.devcontainer/devcontainer.json 中改写 mounts 为
-  ```
-  "mounts": [
-    "source=刚才创建的volume的名字,target=${containerWorkspaceFolder}/high_speed_files,type=volume"
-	],
-  ```
+    ```
+    "mounts": [
+      "source=刚才创建的volume的名字,target=${containerWorkspaceFolder}/high_speed_files,type=volume"
+	  ],
+    ```
 3. 在 VSCode 中运行 rebuild Container
 4. 这样一来 high_speed_files 目录里的文件的性能就非常高了
 5. 不过要记得经常把 volume 中的文件上传到 GitHub，不然你哪天不小心把 volume 删了，代码就彻底没了 
