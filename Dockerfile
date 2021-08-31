@@ -11,11 +11,9 @@ RUN [ -z "$nic" ] && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc
 
 # basic tools
 RUN apk update
-RUN apk add --update alpine-sdk && \
-    apk add libffi-dev openssl-dev && \
-    apk --no-cache --update add build-base \
-        ca-certificates cmake
-RUN apk add --no-cache bash git vim 
+RUN apk --no-cache --update add build-base \
+        ca-certificates cmake bash git vim \
+        libffi-dev openssl-dev alpine-sdk
 ENV EDITOR=/usr/bin/vim
 ENV VISUAL=/usr/bin/vim
 # end
@@ -49,7 +47,6 @@ ENV RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
 ENV CARGO_HTTP_MULTIPLEXING=false
 ENV PATH="/root/.cargo/bin:${PATH}"
 RUN [ -z "$nic" ] || rm /root/.cargo/config;\
-    apk add --no-cache ca-certificates && \
     sh ./rustup-init.sh -y; 
 # end
 
@@ -72,24 +69,17 @@ ENV PATH /go/bin:$PATH
 RUN apk add --no-cache go=~1.16.7; \
     mkdir -p ${GOPATH}/src ${GOPATH}/bin; \
     [ -z "$nic" ] && go env -w GO111MODULE=on &&\
-    go env -w  GOPROXY=https://goproxy.cn,direct; \
-    go get github.com/uudashr/gopkgs/v2; \
-    go get github.com/uudashr/gopkgs/v2/cmd/gopkgs; \
-    go get github.com/ramya-rao-a/go-outline; \
-    go get github.com/cweill/gotests/... ; \
-    go get golang.org/x/tools/gopls; \
-    go get go get github.com/fatih/gomodifytags; \
-    go get github.com/josharian/impl; \
-    go get github.com/haya14busa/goplay; \
-    go get github.com/haya14busa/goplay/cmd/goplay; \
-    go get github.com/go-delve/delve/cmd/dlv; \
-    go get honnef.co/go/tools/cmd/staticcheck; \
-    go get golang.org/x/tools/gopls@latest; \
-    go get golang.org/x/tools/cmd/goimports; 
+    go env -w GOPROXY=https://goproxy.cn,direct; 
 # end
 
 # Dev env for JS
 RUN apk add --no-cache nodejs=~14.17 yarn=~1.22 &&\
     [ -z "$nic" ] && yarn config set registry https://registry.npm.taobao.org; \
     yarn global add nrm; 
+# end
+
+# Java
+RUN apk add --no-cache openjdk8=~8
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
+ENV PATH=$JAVA_HOME/bin:$PATH
 # end

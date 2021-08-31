@@ -39,3 +39,12 @@ Oh My Docker
 3. 在 VSCode 中运行 rebuild Container
 4. 这样一来 high_speed_files 目录里的文件的性能就非常高了
 5. 不过要记得经常把 volume 中的文件上传到 GitHub，不然你哪天不小心把 volume 删了，代码就彻底没了 
+
+> 如何安装 Rails?
+
+```
+apk add --no-cache libxml2 libxml2-dev libxml2-utils sqlite-dev tzdata
+apk add postgresql-dev postgresql
+gem install rails --version '~>6.1'
+rails new --api my_rails_app
+```
