@@ -20,14 +20,14 @@ Oh My Docker
 
 ## 常见问题
 
-> 如何连接数据库？
+### 如何连接数据库？
 
 1. 新建一个 Docker network
 2. 新建另一个 Docker 的数据库实例，让其连接第一步中的 network
 3. 在 my-projects/.devcontainer/devcontainer.json 中改写 runArgs 为 `"runArgs": ["--network=oh-my-docker", "--dns=114.114.114.114"],`
 4. 在 VSCode 中运行 rebuild Container
 
-> 如何提升文件性能？
+### 如何提升文件性能？
 
 1. 新建一个 Docker volume
 2. 在my-projects/.devcontainer/devcontainer.json 中改写 mounts 为
@@ -39,8 +39,9 @@ Oh My Docker
 3. 在 VSCode 中运行 rebuild Container
 4. 这样一来 high_speed_files 目录里的文件的性能就非常高了
 5. 不过要记得经常把 volume 中的文件上传到 GitHub，不然你哪天不小心把 volume 删了，代码就彻底没了 
+6. 如果你希望备份 volume 的数据，可以看[这篇问答](https://stackoverflow.com/questions/26331651/how-can-i-backup-a-docker-container-with-its-data-volumes)。
 
-> 如何安装 Rails?
+### 如何安装 Rails?
 
 ```
 apk add --no-cache libxml2 libxml2-dev libxml2-utils sqlite-dev tzdata
