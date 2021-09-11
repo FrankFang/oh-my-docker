@@ -83,3 +83,7 @@ RUN apk add --no-cache openjdk8=~8
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
 ENV PATH=$JAVA_HOME/bin:$PATH
 # end
+
+# fix
+RUN apk add --update --no-cache less openssh
+# end
