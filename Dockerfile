@@ -66,16 +66,16 @@ RUN apk add --no-cache zsh &&\
 ENV GOROOT /usr/lib/go
 ENV GOPATH /go
 ENV PATH /go/bin:$PATH
-RUN apk add --no-cache go=~1.16.7; \
+RUN apk add --no-cache go=~1.16; \
     mkdir -p ${GOPATH}/src ${GOPATH}/bin; \
     [ -z "$nic" ] && go env -w GO111MODULE=on &&\
     go env -w GOPROXY=https://goproxy.cn,direct; 
 # end
 
 # Dev env for JS
-RUN apk add --no-cache nodejs=~14.17 yarn=~1.22 &&\
-    [ -z "$nic" ] && yarn config set registry https://registry.npm.taobao.org; \
-    yarn global add nrm; 
+RUN apk add --no-cache nodejs=~14.17 yarn=~1.22 npm=~7.17&&\
+    [ -z "$nic" ] && npm config set registry=https://registry.npm.taobao.org; \
+    yarn global add nrm pnpm; 
 # end
 
 # Java
