@@ -3,6 +3,8 @@ Oh My Docker
 
 你的第一个 Docker 开发环境。
 
+**[视频教程](https://www.bilibili.com/video/BV1LP4y1W7nw)**
+
 ## 使用方法
 
 1. 安装最新版 Docker 客户端，并运行 Docker
