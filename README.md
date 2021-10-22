@@ -3,6 +3,8 @@ Oh My Docker
 
 你的第一个 Docker 开发环境。
 
+**[视频教程](https://www.bilibili.com/video/BV1LP4y1W7nw)**
+
 ## 使用方法
 
 1. 安装最新版 Docker 客户端，并运行 Docker
@@ -21,6 +23,20 @@ Oh My Docker
 
 ## 常见问题
 
+### 如何提升文件性能？
+
+1. 新建一个 Docker volume
+2. 在my-projects/.devcontainer/devcontainer.json 中改写 mounts 为
+    ```
+    "mounts": [
+      "source=刚才创建的volume的名字,target=${containerWorkspaceFolder}/high_speed_files,type=volume"
+	  ],
+    ```
+3. 在 VSCode 中运行 rebuild Container
+4. 这样一来 high_speed_files 目录里的文件的性能就非常高了
+5. 不过要记得经常把 volume 中的文件上传到 GitHub，不然你哪天不小心把 volume 删了，代码就彻底没了 
+6. 如果你希望备份 volume 的数据，可以看[这篇问答](https://stackoverflow.com/questions/26331651/how-can-i-backup-a-docker-container-with-its-data-volumes)。
+
 ### 如何添加自己的工具？
 
 你只需要在 my_projects/Dockerfile 中写 
@@ -38,19 +54,7 @@ RUN apk add --no-cache XXX
 3. 在 my-projects/.devcontainer/devcontainer.json 中改写 runArgs 为 `"runArgs": ["--network=oh-my-docker", "--dns=114.114.114.114"],`
 4. 在 VSCode 中运行 rebuild Container
 
-### 如何提升文件性能？
 
-1. 新建一个 Docker volume
-2. 在my-projects/.devcontainer/devcontainer.json 中改写 mounts 为
-    ```
-    "mounts": [
-      "source=刚才创建的volume的名字,target=${containerWorkspaceFolder}/high_speed_files,type=volume"
-	  ],
-    ```
-3. 在 VSCode 中运行 rebuild Container
-4. 这样一来 high_speed_files 目录里的文件的性能就非常高了
-5. 不过要记得经常把 volume 中的文件上传到 GitHub，不然你哪天不小心把 volume 删了，代码就彻底没了 
-6. 如果你希望备份 volume 的数据，可以看[这篇问答](https://stackoverflow.com/questions/26331651/how-can-i-backup-a-docker-container-with-its-data-volumes)。
 
 ### 如何安装 Rails?
 
