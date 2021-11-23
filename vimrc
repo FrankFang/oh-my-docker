@@ -8,21 +8,48 @@ set shortmess=a
 set autowriteall
 
 call plug#begin('~/.vim/plugged')
+Plug 'Shutnik/jshint2.vim'
+Plug 'editorconfig/editorconfig-vim'
 Plug 'rhysd/committia.vim'
+Plug 'dbakker/vim-projectroot'
+"Plug 'posva/vim-vue'
 Plug 'mhinz/vim-startify'
+Plug 'mxw/vim-jsx'
 Plug 'Yggdroot/indentLine'
+Plug 'vim-scripts/vim-auto-save'
+Plug 'vim-ruby/vim-ruby'
+Plug 'jiangmiao/auto-pairs'
+Plug 'othree/html5.vim'
+Plug 'vimoutliner/vimoutliner'
+Plug 'leafgarland/typescript-vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rails'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'wting/gitsessions.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'reedes/vim-colors-pencil'
 Plug 'xolox/vim-misc'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'groenewege/vim-less'
 Plug 'mikewest/vimroom'
 Plug 'sjl/gundo.vim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'ervandew/supertab'
+Plug 'groenewege/vim-less'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'pangloss/vim-javascript'
+Plug 'kchmck/vim-coffee-script'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'mattn/emmet-vim'
 Plug 'romainl/flattened'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+"Plug 'jistr/vim-nerdtree-tabs'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-rooter'
 Plug 'vim-scripts/gitignore'
 Plug 'elzr/vim-json'
@@ -33,9 +60,18 @@ Plug 'vim-scripts/wombat256.vim'
 " snips
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
-Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
+
+"neovim
+"Plug 'Shougo/deoplete.nvim'
+"Plug 'Shougo/neoyank.vim'
+"Plug 'Shougo/neomru.vim'
+"Plug 'Shougo/vimproc.vim'
+"Plug 'Shougo/unite.vim'
+"Plug 'tsukkee/unite-tag'
+"Plug 'ujihisa/unite-colorscheme'
+"Plug 'lambdalisue/unite-grep-vcs'
 
 call plug#end()
 
@@ -43,6 +79,16 @@ call plug#end()
 filetype plugin indent on
 syntax enable
 
+
+" js hint 2
+let jshint2_save = 1
+let jshint2_max_height = 12
+
+
+" git gutter
+let g:gitgutter_diff_args = '--ignore-all-space --ignore-blank-lines'
+
+let g:session_autosave = 'no'
 
 let g:gundo_preview_height = 30
 let g:gundo_right = 1
@@ -72,7 +118,34 @@ function! <SID>AutoProjectRootCD()
 endfunction
 
 autocmd BufEnter * call <SID>AutoProjectRootCD()
+
+" nerdtree
+let g:NERDTreeWinPos = "right"
+let NERDTreeChDirMode=0
+let NERDTreeQuitOnOpen=0
+nnoremap <silent> <leader>f :<c-u>ProjectRootExe NERDTreeFind<cr>
+autocmd FileType nerdtree call s:nerdtree_settings()
+function! s:nerdtree_settings()
+  " Play nice with supertab
+  " Enable navigation with control-j and control-k in insert mode
+  nmap <buffer> <ESC>   :NERDTreeClose<CR>
+  nmap <buffer> <c-c>   :NERDTreeClose<CR>
+  nmap <buffer> `   :NERDTreeClose<CR>
+  nmap <buffer> q   :NERDTreeClose<CR>
+endfunction
+
+" NERDTree tabs
+let g:nerdtree_tabs_open_on_console_startup = 0
+let g:nerdtree_tabs_open_on_gui_startup = 0
+let g:nerdtree_tabs_open_on_new_tab = 0
+let g:nerdtree_tabs_autofind = 1
+
 nnoremap <leader>k :Bclose<CR>
+
+
+" auto save
+let g:auto_save = 0  " enable AutoSave on Vim startup
+let g:auto_save_in_insert_mode = 0
 
 " ctrlp
 let g:ctrlp_custom_ignore = {
@@ -108,10 +181,11 @@ autocmd BufNewFile,BufRead *.md setlocal ts=4 sw=4
 autocmd BufNewFile,BufRead *.md setlocal expandtab
 au BufNewFile,BufRead *.vue setlocal filetype=vue
 autocmd Filetype vue setlocal filetype=html
-autocmd Filetype coffee SnipMateLoadScope eruby
 
 " emmet
 let g:user_emmet_install_global = 1
+"autocmd FileType html,erb,css,less,sass,scss EmmetInstall
+"autocmd FileType html,erb,css,less,sass,scss imap <buffer> <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 let g:user_emmet_leader_key='<C-A-S-Z>'
 imap   <C-y>   <plug>(emmet-expand-abbr)
 nmap   <C-y>   <plug>(emmet-expand-abbr)
@@ -146,6 +220,8 @@ set foldnestmax=5
 
 vnoremap <space><space> zf
 nnoremap <space><space> za
+
+
 
 
 "encoding
@@ -197,6 +273,7 @@ set nosmartindent
 set nocindent
 set backspace=eol,start,indent
 set background=light
+"set completeopt=menuone
 set expandtab
 set listchars=tab:>·
 set fileformats=unix,dos,mac
@@ -239,9 +316,23 @@ set wildchar=<Tab> wildmenu wildmode=full
 set wildcharm=<C-Z>
 nnoremap <M-`> :b <C-Z>
 
+" airline
+"let g:airline_section_b = '%{strftime("%H:%M")}'
+
+if has("gui_running")
+  set guifont=Sauce\ Code\ Powerline:h13
+endif
+
 " colorscheme
-colorscheme molokai
+silent! colorscheme molokai
 set colorcolumn=0
+map <F11> :let &background = ( &background == "dark"? "light" : "dark" )<CR>
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Helper functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Don't close window, when deleting a buffer
 command! Bclose call <SID>BufcloseCloseIt()
@@ -281,21 +372,32 @@ if has('persistent_undo')
   set undofile
 endif
 
-" Strip trailing whitespace and newlines on save
-fun! <SID>StripTrailingWhitespace()
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e
-    %s/\($\n\s*\)\+\%$//e
-    call cursor(l, c)
-endfun
-autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
+
+"airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+
+" StripTrailingWhitespaces
+nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+"set spell spelllang=en_us
+
+"rails
+nnoremap <leader>rt :<c-u>!rails t<CR>
+nnoremap <leader>rr :<c-u>!bin/rake routes<CR>
+nnoremap <leader>rv :<c-u>Eview<CR>
+nnoremap <leader>rc :<c-u>Econtroller<CR>
+
+" jsx
+let g:jsx_ext_required = 0
 
 " startify
-let g:startify_files_number = 20
+
+let g:startify_files_number           = 20
+
 let g:startify_bookmarks = [
         \ { 'c': '~/.vimrc' },
         \ ]
+
 let g:startify_list_order = [
       \ ['  # 最近使用的文件'],
       \ 'files',
@@ -304,6 +406,11 @@ let g:startify_list_order = [
       \ ['  # 书签'],
       \ 'bookmarks'
       \ ]
+
+nnoremap <leader>h :<c-u>:ProjectRootCD<cr>
+nnoremap <leader>b :<c-u>silent exec "!open %:p"<CR>
+autocmd FileType javascript imap <buffer> <c-l> <c-o>:<c-u>silent exec "!prettier --single-quote --trailing-comma es5 --print-width 120 --semi false --write %:p"<CR>
+autocmd FileType javascript nmap <buffer> <c-l> :<c-u>silent exec "!prettier --single-quote --trailing-comma es5 --print-width 120 --semi false --write %:p"<CR>
 autocmd FileType gitcommit call setpos('.', [0, 1, 1, 0])
 fun! RememberLine()
     if &ft =~ 'gitcommit'
