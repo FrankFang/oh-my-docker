@@ -4,3 +4,6 @@ alias ga='git add'
 alias gc='git commit'
 alias gl='git pull'
 alias gp='git push'
+alias ll='ls -lh'
+alias la='ls -alh'
+[ -f ./bash_aliases.local ] && { source ./bash_aliases.local }
