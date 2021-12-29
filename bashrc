@@ -13,7 +13,6 @@ alias la='ls -alh'
 [ -f ~/.rvm/scripts/rvm ] && { source ~/.rvm/scripts/rvm }
 [ -f ~/.config/z/z.sh ] && { source ~/.config/z/z.sh }
 export FZF_DEFAULT_COMMAND='ag -g ""'
-export EDITOR='nvim'
 export TZ='Asia/Shanghai'
 export EDITOR=nvim
 export VISUAL=nvim
