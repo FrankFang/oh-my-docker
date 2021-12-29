@@ -47,6 +47,19 @@ RUN apk add --no-cache XXX
 
 就可以安装任意工具了。
 
+### 如何添加自己的配置
+
+oh-my-docker 内置了 chezmoi，它可以用来管理配置文件，举例：
+
+```
+chezmoi init
+chezmoi add ~/.bashrc
+chezmoi edit ~/.bashrc
+chezmoi -v apply
+```
+
+详细用法见：https://github.com/twpayne/chezmoi
+
 ### 如何连接数据库？
 
 1. 新建一个 Docker network

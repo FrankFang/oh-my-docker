@@ -90,18 +90,21 @@ RUN git clone --depth=1 https://github.com/frankfang/nvim-config.git /root/.conf
 		pip install 'python-lsp-server[all]' pylsp-mypy pyls-isort vim-vint &&\
 	  yarn global add vim-language-server && \
 		yes | pacman -S ripgrep
-RUN nvim +PackerSync +20sleep +qall
+RUN nvim +PackerSync +30sleep +qall
 
 # # end 
 
 # others
-ADD .bash_aliases /root/.bash_aliases
-RUN yes | pacman -S fzf openssh docker fish exa &&\
+RUN yes | pacman -S fzf openssh docker exa the_silver_searcher fd chezmoi &&\
 		mkdir -p /etc/docker &&\
 		echo '{"registry-mirrors": ["http://f1361db2.m.daocloud.io"] }' > /etc/docker/daemon.json &&\
 		yes | pacman -S openssh &&\
 		ssh-keygen -t rsa -N '' -f /etc/ssh/ssh_host_rsa_key &&\
 		ssh-keygen -t dsa -N '' -f /etc/ssh/ssh_host_dsa_key &&\
-	 	echo 'source /root/.bash_aliases' >> /root/.zshrc &&\
-		echo 'source /root/.bash_aliases' >> /root/.bashrc
+		git clone --depth=1 https://github.com/rupa/z.git /root/.config/z &&\
+	 	echo 'source /root/.bashrc' >> /root/.zshrc
+# end
+
+# bash
+ADD bashrc /root/.bashrc
 # end

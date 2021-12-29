@@ -25,4 +25,3 @@ Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch
 Server = http://mirrors.wsyu.edu.cn/archlinux/$repo/os/$arch
 Server = https://mirrors.wsyu.edu.cn/archlinux/$repo/os/$arch
 Server = https://mirrors.xjtu.edu.cn/archlinux/$repo/os/$arch
-Server = http://mirrors.zju.edu.cn/archlinux/$repo/os/$arch
