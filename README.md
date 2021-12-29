@@ -56,6 +56,8 @@ chezmoi init
 chezmoi add ~/.bashrc
 chezmoi edit ~/.bashrc
 chezmoi -v apply
+vim ~/.bashrc
+chezmoi re-add ~/.bashrc
 ```
 
 详细用法见：https://github.com/twpayne/chezmoi
