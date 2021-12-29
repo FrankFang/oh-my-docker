@@ -80,7 +80,7 @@ chezmoi -v apply
 		"source=chezmoi,target=/root/.local/share/chezmoi,type=volume",
 		"source=repos,target=/root/repos,type=volume",
 		"source=vscode-extensions,target=/root/.vscode-server/extensions,type=volume",
-		"source=go-src,target=/root/go/src,type=volume",
+    "source=go-bin,target=/root/go/bin,type=volume",
 	],
 	"remoteUser": "root",
 	"postStartCommand": "/usr/sbin/dockerd & /usr/sbin/sshd -D"
