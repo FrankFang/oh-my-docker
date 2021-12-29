@@ -60,6 +60,33 @@ chezmoi -v apply
 
 详细用法见：https://github.com/twpayne/chezmoi
 
+### .devcontainer/devcontainer.json 参考
+
+```
+{
+	"name": "OhMyDocker",
+	"context": "..",
+	"dockerFile": "/path/to/Dockerfile",
+	"settings": {},
+	"extensions": [],
+	"runArgs": [
+		//"--network=network1",
+		//"--memory=10240m",
+		//"--memory-swap=10240m"
+		"--dns=114.114.114.114",
+		"--privileged",
+	],
+	"mounts": [
+		"source=chezmoi,target=/root/.local/share/chezmoi,type=volume",
+		"source=repos,target=/root/repos,type=volume",
+		"source=vscode-extensions,target=/root/.vscode-server/extensions,type=volume",
+		"source=go-src,target=/root/go/src,type=volume",
+	],
+	"remoteUser": "root",
+	"postStartCommand": "/usr/sbin/dockerd & /usr/sbin/sshd -D"
+}
+```
+
 ### 如何连接数据库？
 
 1. 新建一个 Docker network
