@@ -51,16 +51,21 @@ RUN apk add --no-cache XXX
 
 oh-my-docker 内置了 chezmoi，它可以用来管理配置文件，举例：
 
+1. 初始化 chezmoi，命令为 `chezmoi init`
+2. 把你想要修改的配置添加到仓库，命令为 `chezmoi add ~/.bashrc`
+3. 修改配置，命令为 `vim ~/.bashrc` 或 `code ~/.bashrc`
+4. 保存你的修改到仓库，命令为 `chezmoi re-add ~/.bashrc`
+5. 当你 rebuild container 之后，执行 `chezmoi apply` 就可以把你的配置恢复到最新
+
+注意：这样做的前提是你在 .devcontainer.json 里面添加如下配置：
+
 ```
-chezmoi init
-chezmoi add ~/.bashrc
-chezmoi edit ~/.bashrc
-chezmoi -v apply
-vim ~/.bashrc
-chezmoi re-add ~/.bashrc
+"mounts": [
+	"source=chezmoi,target=/root/.local/share/chezmoi,type=volume"
+]
 ```
 
-详细用法见：https://github.com/twpayne/chezmoi
+chezmoi 的详细用法见：https://github.com/twpayne/chezmoi
 
 ### .devcontainer/devcontainer.json 参考
 
