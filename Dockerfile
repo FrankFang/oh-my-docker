@@ -78,14 +78,14 @@ ENV PATH=$JAVA_HOME/bin:$PATH
 RUN git clone --depth=1 https://github.com/frankfang/nvim-config.git /root/.config/nvim/ &&\
 		git clone --depth=1 https://github.com/wbthomason/packer.nvim /root/.local/share/nvim/site/pack/packer/opt/packer.nvim &&\     
 		git clone --depth=1 https://github.com/navarasu/onedark.nvim.git /root/.local/share/nvim/site/pack/packer/opt/onedark.nvim &&\ 
-		git clone --depth=1 https://hub.fastgit.org/lifepillar/vim-gruvbox8 /root/.local/share/nvim/site/pack/packer/opt/vim-gruvbox8 &&\
-		git clone --depth=1 https://hub.fastgit.org/sainnhe/edge /root/.local/share/nvim/site/pack/packer/opt/edge &&\
-		git clone --depth=1 https://hub.fastgit.org/sainnhe/sonokai /root/.local/share/nvim/site/pack/packer/opt/sonokai &&\
-		git clone --depth=1 https://hub.fastgit.org/sainnhe/gruvbox-material /root/.local/share/nvim/site/pack/packer/opt/gruvbox-material &&\
-		git clone --depth=1 https://hub.fastgit.org/shaunsingh/nord.nvim /root/.local/share/nvim/site/pack/packer/opt/nord.nvim &&\    
-		git clone --depth=1 https://hub.fastgit.org/NTBBloodbath/doom-one.nvim /root/.local/share/nvim/site/pack/packer/opt/doom-one.nvim &&\
-		git clone --depth=1 https://hub.fastgit.org/sainnhe/everforest /root/.local/share/nvim/site/pack/packer/opt/everforest &&\     
-		git clone --depth=1 https://hub.fastgit.org/EdenEast/nightfox.nvim /root/.local/share/nvim/site/pack/packer/opt/nightfox.nvim &&\
+		git clone --depth=1 https://hub.fastgit.xyz/lifepillar/vim-gruvbox8 /root/.local/share/nvim/site/pack/packer/opt/vim-gruvbox8 &&\
+		git clone --depth=1 https://hub.fastgit.xyz/sainnhe/edge /root/.local/share/nvim/site/pack/packer/opt/edge &&\
+		git clone --depth=1 https://hub.fastgit.xyz/sainnhe/sonokai /root/.local/share/nvim/site/pack/packer/opt/sonokai &&\
+		git clone --depth=1 https://hub.fastgit.xyz/sainnhe/gruvbox-material /root/.local/share/nvim/site/pack/packer/opt/gruvbox-material &&\
+		git clone --depth=1 https://hub.fastgit.xyz/shaunsingh/nord.nvim /root/.local/share/nvim/site/pack/packer/opt/nord.nvim &&\    
+		git clone --depth=1 https://hub.fastgit.xyz/NTBBloodbath/doom-one.nvim /root/.local/share/nvim/site/pack/packer/opt/doom-one.nvim &&\
+		git clone --depth=1 https://hub.fastgit.xyz/sainnhe/everforest /root/.local/share/nvim/site/pack/packer/opt/everforest &&\     
+		git clone --depth=1 https://hub.fastgit.xyz/EdenEast/nightfox.nvim /root/.local/share/nvim/site/pack/packer/opt/nightfox.nvim &&\
 		pip install -U pynvim &&\
 		pip install 'python-lsp-server[all]' pylsp-mypy pyls-isort vim-vint &&\
 	  yarn global add vim-language-server && \
