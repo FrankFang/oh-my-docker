@@ -5,7 +5,7 @@ ENV SHELL /bin/bash
 ADD mirrorlist /etc/pacman.d/mirrorlist
 RUN yes | pacman -Syu 
 RUN yes | pacman -S git zsh
-VOLUME [ "/root/" ]
+VOLUME [ "/root/", "/root/.local/share/chezmoi", "/root/repos", "/root/.vscode-server/extensions", "/root/go/bin", "/var/lib/docker" ]
 # end 
 
 # zsh
@@ -34,22 +34,9 @@ ADD rvm-stable.tar.gz /tmp/rvm-stable.tar.gz
 ENV PATH="/usr/local/rvm/bin:$PATH"
 RUN mv /tmp/rvm-stable.tar.gz/rvm-rvm-6bfc921 /tmp/rvm && cd /tmp/rvm && ./install --auto-dotfiles &&\
 		echo "ruby_url=https://cache.ruby-china.com/pub/ruby" > /usr/local/rvm/user/db &&\
-		echo 'gem: \"--no-document --verbose\"' > "$HOME/.gemrc" &&\
+		echo 'gem: --no-document --verbose' > "$HOME/.gemrc" &&\
 		rvm install ruby-3
 # end 
-
-# Rust
-WORKDIR /tmp
-ADD .cargo.cn.config /root/.cargo/config
-ENV RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
-ENV RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
-ENV CARGO_HTTP_MULTIPLEXING=false
-ENV PATH="/root/.cargo/bin:${PATH}"
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
-# end
-
-
-
 
 # Install Go
 RUN yes | pacman -S go
@@ -63,48 +50,59 @@ RUN go env -w GO111MODULE=on &&\
 # end
 
 # Dev env for JS
-RUN yes | pacman -S nodejs npm yarn &&\
+RUN yes | pacman -S nodejs npm &&\
     npm config set registry=https://registry.npmmirror.com &&\
-    yarn global add nrm pnpm 
+		corepack enable 
 # end
-
-# Java
-RUN yes | pacman -S jre-openjdk-headless jdk-openjdk
-ENV JAVA_HOME=/usr/lib/jvm/default/
-ENV PATH=$JAVA_HOME/bin:$PATH
-# end
-
-# neovim
-RUN git clone --depth=1 https://github.com/frankfang/nvim-config.git /root/.config/nvim/ &&\
-		git clone --depth=1 https://github.com/wbthomason/packer.nvim /root/.local/share/nvim/site/pack/packer/opt/packer.nvim &&\     
-		git clone --depth=1 https://github.com/navarasu/onedark.nvim.git /root/.local/share/nvim/site/pack/packer/opt/onedark.nvim &&\ 
-		git clone --depth=1 https://hub.fastgit.org/lifepillar/vim-gruvbox8 /root/.local/share/nvim/site/pack/packer/opt/vim-gruvbox8 &&\
-		git clone --depth=1 https://hub.fastgit.org/sainnhe/edge /root/.local/share/nvim/site/pack/packer/opt/edge &&\
-		git clone --depth=1 https://hub.fastgit.org/sainnhe/sonokai /root/.local/share/nvim/site/pack/packer/opt/sonokai &&\
-		git clone --depth=1 https://hub.fastgit.org/sainnhe/gruvbox-material /root/.local/share/nvim/site/pack/packer/opt/gruvbox-material &&\
-		git clone --depth=1 https://hub.fastgit.org/shaunsingh/nord.nvim /root/.local/share/nvim/site/pack/packer/opt/nord.nvim &&\    
-		git clone --depth=1 https://hub.fastgit.org/NTBBloodbath/doom-one.nvim /root/.local/share/nvim/site/pack/packer/opt/doom-one.nvim &&\
-		git clone --depth=1 https://hub.fastgit.org/sainnhe/everforest /root/.local/share/nvim/site/pack/packer/opt/everforest &&\     
-		git clone --depth=1 https://hub.fastgit.org/EdenEast/nightfox.nvim /root/.local/share/nvim/site/pack/packer/opt/nightfox.nvim &&\
-		pip install -U pynvim &&\
-		pip install 'python-lsp-server[all]' pylsp-mypy pyls-isort vim-vint &&\
-	  yarn global add vim-language-server && \
-		yes | pacman -S ripgrep
-RUN nvim +PackerSync +30sleep +qall
-
-# # end 
 
 # others
-RUN yes | pacman -S fzf openssh docker exa the_silver_searcher fd chezmoi &&\
+RUN yes | pacman -S fzf openssh docker exa the_silver_searcher fd chezmoi rsync &&\
 		mkdir -p /etc/docker &&\
-		echo '{"registry-mirrors": ["http://f1361db2.m.daocloud.io"] }' > /etc/docker/daemon.json &&\
+		echo '{"registry-mirrors": ["http://f1361db2.m.daocloud.io"]}' > /etc/docker/daemon.json &&\
 		yes | pacman -S openssh &&\
 		ssh-keygen -t rsa -N '' -f /etc/ssh/ssh_host_rsa_key &&\
-		ssh-keygen -t dsa -N '' -f /etc/ssh/ssh_host_dsa_key &&\
-		git clone --depth=1 https://github.com/rupa/z.git /root/.config/z &&\
-	 	echo 'source /root/.bashrc' >> /root/.zshrc
+		ssh-keygen -t dsa -N '' -f /etc/ssh/ssh_host_dsa_key
 # end
 
 # bash
 ADD bashrc /root/.bashrc
+ADD z /root/.config/z 
+RUN echo 'source /root/.bashrc' >> /root/.zshrc
 # end
+
+############### 删除的功能
+
+# Rust
+# WORKDIR /tmp
+# ADD .cargo.cn.config /root/.cargo/config
+# ENV RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
+# ENV RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
+# ENV CARGO_HTTP_MULTIPLEXING=false
+# ENV PATH="/root/.cargo/bin:${PATH}"
+# RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+# end
+
+# Java
+# RUN yes | pacman -S jre-openjdk-headless jdk-openjdk
+# ENV JAVA_HOME=/usr/lib/jvm/default/
+# ENV PATH=$JAVA_HOME/bin:$PATH
+# end
+
+# neovim
+# RUN git clone --depth=1 https://github.com/frankfang/nvim-config.git /root/.config/nvim/ &&\
+# 		git clone --depth=1 https://github.com/wbthomason/packer.nvim /root/.local/share/nvim/site/pack/packer/opt/packer.nvim &&\     
+# 		git clone --depth=1 https://github.com/navarasu/onedark.nvim.git /root/.local/share/nvim/site/pack/packer/opt/onedark.nvim &&\ 
+# 		git clone --depth=1 https://hub.fastgit.org/lifepillar/vim-gruvbox8 /root/.local/share/nvim/site/pack/packer/opt/vim-gruvbox8 &&\
+# 		git clone --depth=1 https://hub.fastgit.org/sainnhe/edge /root/.local/share/nvim/site/pack/packer/opt/edge &&\
+# 		git clone --depth=1 https://hub.fastgit.org/sainnhe/sonokai /root/.local/share/nvim/site/pack/packer/opt/sonokai &&\
+# 		git clone --depth=1 https://hub.fastgit.org/sainnhe/gruvbox-material /root/.local/share/nvim/site/pack/packer/opt/gruvbox-material &&\
+# 		git clone --depth=1 https://hub.fastgit.org/shaunsingh/nord.nvim /root/.local/share/nvim/site/pack/packer/opt/nord.nvim &&\    
+# 		git clone --depth=1 https://hub.fastgit.org/NTBBloodbath/doom-one.nvim /root/.local/share/nvim/site/pack/packer/opt/doom-one.nvim &&\
+# 		git clone --depth=1 https://hub.fastgit.org/sainnhe/everforest /root/.local/share/nvim/site/pack/packer/opt/everforest &&\     
+# 		git clone --depth=1 https://hub.fastgit.org/EdenEast/nightfox.nvim /root/.local/share/nvim/site/pack/packer/opt/nightfox.nvim &&\
+# 		pip install -U pynvim &&\
+# 		pip install 'python-lsp-server[all]' pylsp-mypy pyls-isort vim-vint &&\
+# 	  yarn global add vim-language-server && \
+# 		yes | pacman -S ripgrep
+# RUN nvim +PackerSync +30sleep +qall
+# # end 
