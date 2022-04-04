@@ -12,6 +12,7 @@ alias la='ls -alh'
 [ -f ~/.bash_aliases.local ] && { source ~/.bash_aliases.local }
 [ -f ~/.rvm/scripts/rvm ] && { source ~/.rvm/scripts/rvm }
 [ -f ~/.config/z/z.sh ] && { source ~/.config/z/z.sh }
+[ -f /usr/local/rvm/scripts/rvm ] && { source /usr/local/rvm/scripts/rvm }
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export TZ='Asia/Shanghai'
 export EDITOR=nvim
@@ -40,7 +41,7 @@ fs(){
   fi
   result=$(ag "$q" | fzf)
   IFS=':' read file line other <<< "$result"
-  [ -n "$file" ] && $EDITOR "$file" +"$line";
+  [ -n "$file" ] && code -g "$file":"$line";
 }
 
 [ `alias | grep "^z=" | wc -l` != 0 ] && unalias z

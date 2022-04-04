@@ -52,7 +52,7 @@ RUN go env -w GO111MODULE=on &&\
 # Dev env for JS
 RUN yes | pacman -S nodejs npm &&\
     npm config set registry=https://registry.npmmirror.com &&\
-		corepack enable 
+		corepack enable
 # end
 
 # others
@@ -69,6 +69,16 @@ ADD bashrc /root/.bashrc
 ADD z /root/.config/z 
 RUN echo 'source /root/.bashrc' >> /root/.zshrc
 # end
+
+
+# nvm
+ENV NVM_DIR /root/.nvm
+ADD nvm-0.39.1 /root/.nvm
+RUN sh /root/.nvm/nvm.sh &&\
+	echo 'export NVM_DIR="$HOME/.nvm"' >> /root/.bashrc &&\
+	echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /root/.bashrc &&\
+	echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /root/.bashrc
+# end 
 
 ############### 删除的功能
 
