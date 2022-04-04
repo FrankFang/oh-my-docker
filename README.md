@@ -7,13 +7,7 @@ Oh My Docker
 
 ## 使用方法
 
-1. 安装最新版 Docker 客户端，并运行 Docker
-  1. 国内用户建议按照[这篇教程](https://www.runoob.com/docker/docker-mirror-acceleration.html)配置加速镜像
-1. 在本地创建目录 my-projects
-2. 使用 VSCode 打开 my-projects，安装 [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) 插件
-3. 创建 my-project/Dockerfile，并在文件中写入 `FROM frankfang128/oh-my-docker:latest` 即可
-4. 在 VSCode 中运行命令（按下快捷键 ctrl+shift+p）输入 Reopen Folder in Container 后回车
-5. 稍等片刻，你就可以新建终端，调用 go / node / cargo / python 等命令了。
+见 https://github.com/FrankFang/oh-my-env-1
 
 ## 功能介绍
 
