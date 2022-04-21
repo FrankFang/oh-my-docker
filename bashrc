@@ -8,6 +8,8 @@ alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset
 alias ls='exa'
 alias ll='ls -lh'
 alias la='ls -alh'
+alias fq='trojan -c ~/.config/trojan.conf > /tmp/trojan.log 2>&1 &'
+alias pc='proxychains -f ~/.config/proxychains.conf'
 
 [ -f ~/.bash_aliases.local ] && { source ~/.bash_aliases.local }
 [ -f ~/.rvm/scripts/rvm ] && { source ~/.rvm/scripts/rvm }
@@ -19,13 +21,14 @@ export EDITOR=nvim
 export VISUAL=nvim
 export PYTHONUNBUFFERED=1
 export PATH="/root/.local/bin:$PATH"
+
 f() {
   local file
   q=$1
 
   file=$(ag -l -g ""| fzf --query="$q" --select-1 --exit-0 -x)
   if [ -n "$file" ] ;then
-    $EDITOR "$file"
+    code "$file"
   fi
 }
 fd() {
@@ -57,6 +60,6 @@ jj() {
   cd "$(_z -l 2>&1 | sed 's/^[0-9,.]* *//' | fzf -q $_last_z_args)"
 }
 
-
-
-
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"

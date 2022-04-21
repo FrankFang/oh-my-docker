@@ -16,7 +16,7 @@ ENV SHELL /bin/zsh
 # end
 
 # basic tools
-RUN yes | pacman -S vi vim neovim git curl wget tree python go java-environment-common 
+RUN yes | pacman -S vi vim neovim git curl wget tree python go
 ENV EDITOR=nvim
 ENV VISUAL=nvim
 # end
@@ -46,7 +46,7 @@ RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 ENV GOROOT /usr/lib/go
 RUN go env -w GO111MODULE=on &&\
     go env -w GOPROXY=https://goproxy.cn,direct &&\
-		go get github.com/silenceper/gowatch
+		go install github.com/silenceper/gowatch@latest
 # end
 
 # Dev env for JS
@@ -64,13 +64,6 @@ RUN yes | pacman -S fzf openssh docker exa the_silver_searcher fd chezmoi rsync 
 		ssh-keygen -t dsa -N '' -f /etc/ssh/ssh_host_dsa_key
 # end
 
-# bash
-ADD bashrc /root/.bashrc
-ADD z /root/.config/z 
-RUN echo 'source /root/.bashrc' >> /root/.zshrc
-# end
-
-
 # nvm
 ENV NVM_DIR /root/.nvm
 ADD nvm-0.39.1 /root/.nvm
@@ -79,6 +72,20 @@ RUN sh /root/.nvm/nvm.sh &&\
 	echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /root/.bashrc &&\
 	echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /root/.bashrc
 # end 
+
+# fq
+RUN yes | pacman -S trojan proxychains-ng
+# end
+
+
+# bash
+ADD bashrc /root/.bashrc
+ADD z /root/.config/z 
+RUN echo 'source /root/.bashrc' >> /root/.zshrc
+# end
+
+# dev deps
+RUN yes | pacman -S postgresql-libs
 
 ############### 删除的功能
 
