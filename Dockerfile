@@ -16,17 +16,9 @@ ENV SHELL /bin/zsh
 # end
 
 # basic tools
-RUN yes | pacman -S vi vim neovim git curl wget tree python go
-ENV EDITOR=nvim
-ENV VISUAL=nvim
-# end
-
-# Python 3 and pip
-ENV PYTHONUNBUFFERED=1
-ENV PATH="/root/.local/bin:$PATH"
-ADD pip.cn.conf /root/.config/pip/pip.conf
-RUN python -m ensurepip &&\
-	python -m pip install --no-cache --upgrade pip setuptools wheel
+RUN yes | pacman -S curl tree
+ENV EDITOR=vim
+ENV VISUAL=vim
 # end
 
 # Ruby
@@ -123,3 +115,11 @@ RUN yes | pacman -S postgresql-libs
 # 		yes | pacman -S ripgrep
 # RUN nvim +PackerSync +30sleep +qall
 # # end 
+
+# # Python 3 and pip
+# ENV PYTHONUNBUFFERED=1
+# ENV PATH="/root/.local/bin:$PATH"
+# ADD pip.cn.conf /root/.config/pip/pip.conf
+# RUN python -m ensurepip &&\
+# 	python -m pip install --no-cache --upgrade pip setuptools wheel
+# # end

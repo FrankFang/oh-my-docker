@@ -17,8 +17,8 @@ alias pc='proxychains -f ~/.config/proxychains.conf'
 [ -f /usr/local/rvm/scripts/rvm ] && { source /usr/local/rvm/scripts/rvm }
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export TZ='Asia/Shanghai'
-export EDITOR=nvim
-export VISUAL=nvim
+export EDITOR=vim
+export VISUAL=vim
 export PYTHONUNBUFFERED=1
 export PATH="/root/.local/bin:$PATH"
 
