@@ -8,11 +8,17 @@ RUN yes | pacman -S git zsh
 VOLUME [ "/root/", "/root/.local/share/chezmoi", "/root/repos", "/root/.vscode-server/extensions", "/root/go/bin", "/var/lib/docker" ]
 # end 
 
+# bash
+ADD bashrc /root/.bashrc
+ADD z /root/.config/z 
+# end
+
 # zsh
 RUN zsh -c 'git clone https://code.aliyun.com/412244196/prezto.git "$HOME/.zprezto"' &&\
 	zsh -c 'setopt EXTENDED_GLOB' &&\
 	zsh -c 'for rcfile in "$HOME"/.zprezto/runcoms/z*; do ln -s "$rcfile" "$HOME/.${rcfile:t}"; done'
 ENV SHELL /bin/zsh
+RUN echo 'source /root/.bashrc' >> /root/.zshrc
 # end
 
 # basic tools
@@ -42,44 +48,44 @@ RUN go env -w GO111MODULE=on &&\
 # end
 
 # Dev env for JS
-RUN yes | pacman -S nodejs npm &&\
+ENV PNPM_HOME /root/.local/share/pnpm
+ENV PATH $PNPM_HOME:$PATH
+RUN yes | pacman -Syu && yes | pacman -S nodejs npm &&\
     npm config set registry=https://registry.npmmirror.com &&\
-		corepack enable
+		corepack enable &&\
+		pnpm setup &&\
+		pnpm i -g http-server
 # end
 
-# others
-RUN yes | pacman -S fzf openssh docker exa the_silver_searcher fd chezmoi rsync &&\
-		mkdir -p /etc/docker &&\
-		echo '{"registry-mirrors": ["http://f1361db2.m.daocloud.io"]}' > /etc/docker/daemon.json &&\
-		yes | pacman -S openssh &&\
+# tools
+RUN yes | pacman -S fzf openssh exa the_silver_searcher fd rsync &&\
 		ssh-keygen -t rsa -N '' -f /etc/ssh/ssh_host_rsa_key &&\
 		ssh-keygen -t dsa -N '' -f /etc/ssh/ssh_host_dsa_key
 # end
 
-# nvm
-ENV NVM_DIR /root/.nvm
-ADD nvm-0.39.1 /root/.nvm
-RUN sh /root/.nvm/nvm.sh &&\
-	echo 'export NVM_DIR="$HOME/.nvm"' >> /root/.bashrc &&\
-	echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /root/.bashrc &&\
-	echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /root/.bashrc
-# end 
 
 # fq
 RUN yes | pacman -S trojan proxychains-ng
 # end
 
-
-# bash
-ADD bashrc /root/.bashrc
-ADD z /root/.config/z 
-RUN echo 'source /root/.bashrc' >> /root/.zshrc
-# end
-
 # dev deps
 RUN yes | pacman -S postgresql-libs
 
-############### 删除的功能
+# nvm
+ENV NVM_DIR /root/.nvm
+ADD nvm-0.39.1 /root/.nvm/
+RUN sh ${NVM_DIR}/nvm.sh &&\
+	echo '' >> /root/.zshrc &&\
+	echo 'export NVM_DIR="$HOME/.nvm"' >> /root/.zshrc &&\
+	echo '[ -s "${NVM_DIR}/nvm.sh" ] && { source "${NVM_DIR}/nvm.sh" }' >> /root/.zshrc &&\
+	echo '[ -s "${NVM_DIR}/bash_completion" ] && { source "${NVM_DIR}/bash_completion" } ' >> /root/.zshrc
+# end 
+
+############### disabled
+# # docker in docker 
+# RUN yes | pacman -S docker &&\
+# 		mkdir -p /etc/docker &&\
+# 		echo '{"registry-mirrors": ["http://f1361db2.m.daocloud.io"]}' > /etc/docker/daemon.json 
 
 # Rust
 # WORKDIR /tmp

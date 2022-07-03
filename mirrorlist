@@ -1,4 +1,4 @@
-Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch
+# Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch
 ## China
 #Server = http://mirrors.163.com/archlinux/$repo/os/$arch
 Server = http://mirrors.aliyun.com/archlinux/$repo/os/$arch
@@ -27,7 +27,7 @@ Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch
 #Server = https://mirrors.wsyu.edu.cn/archlinux/$repo/os/$arch
 #Server = https://mirrors.xjtu.edu.cn/archlinux/$repo/os/$arch
 #Server = http://mirrors.zju.edu.cn/archlinux/$repo/os/$arch
-Server = https://asia.mirror.pkgbuild.com/$repo/os/$arch
+#Server = https://asia.mirror.pkgbuild.com/$repo/os/$arch
 #Server = http://mirror-hk.koddos.net/archlinux/$repo/os/$arch
 #Server = https://mirror-hk.koddos.net/archlinux/$repo/os/$arch
 #Server = http://hkg.mirror.rackspace.com/archlinux/$repo/os/$arch

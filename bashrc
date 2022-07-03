@@ -11,10 +11,9 @@ alias la='ls -alh'
 alias fq='trojan -c ~/.config/trojan.conf > /tmp/trojan.log 2>&1 &'
 alias pc='proxychains -f ~/.config/proxychains.conf'
 
-[ -f ~/.bash_aliases.local ] && { source ~/.bash_aliases.local }
-[ -f ~/.rvm/scripts/rvm ] && { source ~/.rvm/scripts/rvm }
-[ -f ~/.config/z/z.sh ] && { source ~/.config/z/z.sh }
-[ -f /usr/local/rvm/scripts/rvm ] && { source /usr/local/rvm/scripts/rvm }
+[ -f ~/.bash_aliases.local ] && source ~/.bash_aliases.local 
+[ -f ~/.config/z/z.sh ] && source ~/.config/z/z.sh 
+[ -f /usr/local/rvm/scripts/rvm ] && source /usr/local/rvm/scripts/rvm 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export TZ='Asia/Shanghai'
 export EDITOR=vim
@@ -59,7 +58,3 @@ j() {
 jj() {
   cd "$(_z -l 2>&1 | sed 's/^[0-9,.]* *//' | fzf -q $_last_z_args)"
 }
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
