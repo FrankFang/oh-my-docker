@@ -11,9 +11,10 @@ alias la='ls -alh'
 alias fq='trojan -c ~/.config/trojan.conf > /tmp/trojan.log 2>&1 &'
 alias pc='proxychains -f ~/.config/proxychains.conf'
 
-[ -f ~/.bash_aliases.local ] && source ~/.bash_aliases.local 
-[ -f ~/.config/z/z.sh ] && source ~/.config/z/z.sh 
-[ -f /usr/local/rvm/scripts/rvm ] && source /usr/local/rvm/scripts/rvm 
+[ -f ~/.bash_aliases.local ] && source ~/.bash_aliases.local
+[ -f ~/.bashrc.local ] && source ~/.bashrc.local
+[ -f ~/.z_jump/z.sh ] && source ~/.z_jump/z.sh
+[ -f /usr/local/rvm/scripts/rvm ] && source /usr/local/rvm/scripts/rvm
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export TZ='Asia/Shanghai'
 export EDITOR=vim
