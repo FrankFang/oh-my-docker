@@ -105,6 +105,8 @@ RUN mkdir -p /root/.config; \
     touch /root/.config/.bashrc; ln -s /root/.config/.bashrc /root/.bashrc.local; \
     touch /root/.config/.zshrc; ln -s /root/.config/.zshrc /root/.zshrc.local;
 RUN echo "rvm_silence_path_mismatch_check_flag=1" >> /root/.rvmrc
+RUN git config --global core.editor "code --wait"; \
+    git config --global init.defaultBranch main
 # end
 
 
