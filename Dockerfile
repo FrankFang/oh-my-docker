@@ -1,11 +1,12 @@
-FROM archlinux:base-devel
+FROM archlinux:latest
 
 WORKDIR /tmp
+ENV UPDATE_TIME 20220930T16:22:00+08:00
 ENV SHELL /bin/bash
 ADD mirrorlist /etc/pacman.d/mirrorlist
-ENV UPDATE_TIME 20220708T10:55:00+08:00
+RUN yes | pacman -Sy archlinux-keyring
 RUN yes | pacman -Syu
-RUN yes | pacman -S git zsh
+RUN yes | pacman -S git zsh which vim curl tree htop
 RUN mkdir -p /root/.config
 VOLUME [ "/root/.config", "/root/repos", "/root/.vscode-server/extensions", "/root/go/bin", "/var/lib/docker", "/root/.local/share/pnpm", "/usr/local/rvm/gems", "/root/.ssh" ]
 # end
@@ -22,10 +23,6 @@ ENV SHELL /bin/zsh
 # end
 
 
-# basic tools
-RUN yes | pacman -S curl tree
-# end
-
 # Ruby
 ADD rvm-stable.tar.gz /tmp/rvm-stable.tar.gz
 ENV PATH /usr/local/rvm/rubies/ruby-3.0.0/bin:$PATH
@@ -37,8 +34,9 @@ ENV GEM_PATH /usr/local/rvm/gems/ruby-3.0.0:/usr/local/rvm/gems/ruby-3.0.0@globa
 RUN touch /root/.config/.gemrc; ln -s /root/.config/.gemrc /root/.gemrc;
 RUN mv /tmp/rvm-stable.tar.gz/rvm-rvm-6bfc921 /tmp/rvm && cd /tmp/rvm && ./install --auto-dotfiles &&\
 		echo "ruby_url=https://cache.ruby-china.com/pub/ruby" > /usr/local/rvm/user/db &&\
-		echo 'gem: --no-document --verbose' >> "$HOME/.gemrc" &&\
-		rvm install ruby-3.0.0
+		echo 'gem: --no-document --verbose' >> "$HOME/.gemrc"
+RUN yes | pacman -S gcc make
+RUN rvm install ruby-3.0.0
 RUN gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/ &&\
 		gem install solargraph rubocop rufo
 # end
