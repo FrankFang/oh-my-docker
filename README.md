@@ -108,4 +108,4 @@ rails new --api my_rails_app
 
 ## 如何让容器与宿主机共享 ssh 认证信息
 
-参考微软官方的教程：https://code.visualstudio.com/docs/remote/containers#_using-ssh-keys
+参考微软官方的教程：https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials
