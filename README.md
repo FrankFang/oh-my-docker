@@ -33,13 +33,14 @@ Oh My Docker
 
 ### 如何添加自己的工具？
 
-你只需要在 my_projects/Dockerfile 中写 
+你只需要在你自己的项目中的 Dockerfile中写 
 
 ```
-RUN apk add --no-cache XXX
+RUN yes | pacman -Syu
+RUN yes | pacman -S xxx
 ```
 
-就可以安装任意工具了。
+即可安装 xxx 工具。
 
 ### 如何添加自己的配置
 
