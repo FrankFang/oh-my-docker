@@ -1,4 +1,4 @@
-# Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch
+Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch
 ## China
 ## China
 Server = http://mirrors.163.com/archlinux/$repo/os/$arch

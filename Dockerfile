@@ -1,10 +1,8 @@
-FROM archlinux:latest
+FROM archlinux:base-20230319.0.135218
 
 WORKDIR /tmp
-ENV UPDATE_TIME 20220930T16:22:00+08:00
 ENV SHELL /bin/bash
 ADD mirrorlist /etc/pacman.d/mirrorlist
-RUN yes | pacman -Sy archlinux-keyring
 RUN yes | pacman -Syu
 RUN yes | pacman -S git zsh which vim curl tree htop
 RUN mkdir -p /root/.config
@@ -24,7 +22,8 @@ ENV SHELL /bin/zsh
 
 
 # Ruby
-ADD rvm-stable.tar.gz /tmp/rvm-stable.tar.gz
+ENV LANG=C.UTF-8
+ADD rvm-rvm-1.29.12-0-g6bfc921.tar.gz /tmp/rvm-stable.tar.gz
 ENV PATH /usr/local/rvm/rubies/ruby-3.0.0/bin:$PATH
 ENV PATH /usr/local/rvm/gems/ruby-3.0.0/bin:$PATH
 ENV PATH /usr/local/rvm/bin:$PATH
@@ -36,20 +35,27 @@ RUN mv /tmp/rvm-stable.tar.gz/rvm-rvm-6bfc921 /tmp/rvm && cd /tmp/rvm && ./insta
 		echo "ruby_url=https://cache.ruby-china.com/pub/ruby" > /usr/local/rvm/user/db &&\
 		echo 'gem: --no-document --verbose' >> "$HOME/.gemrc"
 RUN yes | pacman -S gcc make
-RUN rvm install ruby-3.0.0
+ADD openssl-1.1.1q.tar.gz /tmp/openssl
+RUN cd /tmp/openssl/openssl-1.1.1q &&\
+    ./config --prefix=/usr/local/openssl &&\
+    make && make install &&\
+    rm -rf /usr/local/openssl/ssl/certs && ln -s /etc/ssl/certs /usr/local/openssl/ssl/certs
+RUN echo "rvm_silence_path_mismatch_check_flag=1" > /root/.rvmrc &&\
+    rvm install ruby-3.0.0 --with-openssl-dir=/usr/local/openssl
 RUN gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/ &&\
 		gem install solargraph rubocop rufo
 # end
 
 # Install Go
-RUN yes | pacman -Syy; yes | pacman -S go
+RUN yes | pacman -S go
 ENV GOPATH /root/go
 ENV PATH $GOPATH/bin:$PATH
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 ENV GOROOT /usr/lib/go
 RUN go env -w GO111MODULE=on &&\
     go env -w GOPROXY=https://goproxy.cn,direct &&\
-		go install github.com/silenceper/gowatch@latest
+		go install github.com/silenceper/gowatch@latest &&\
+    go install golang.org/x/tools/gopls@latest
 # end
 
 # Dev env for JS
@@ -90,69 +96,4 @@ RUN yes | pacman -S trojan proxychains-ng
 RUN yes | pacman -S postgresql-libs
 # end
 
-# dotfiles
-ADD bashrc /root/.bashrc
-RUN echo '[ -f /root/.bashrc ] && source /root/.bashrc' >> /root/.zshrc; \
-    echo '[ -f /root/.zshrc.local ] && source /root/.zshrc.local' >> /root/.zshrc
-RUN mkdir -p /root/.config; \
-    touch /root/.config/.profile; ln -s /root/.config/.profile /root/.profile; \
-    touch /root/.config/.gitconfig; ln -s /root/.config/.gitconfig /root/.gitconfig; \
-    touch /root/.config/.zsh_history; ln -s /root/.config/.zsh_history /root/.zsh_history; \
-    touch /root/.config/.z; ln -s /root/.config/.z /root/.z; \
-    touch /root/.config/.rvmrc; ln -s /root/.config/.rvmrc /root/.rvmrc; \
-    touch /root/.config/.bashrc; ln -s /root/.config/.bashrc /root/.bashrc.local; \
-    touch /root/.config/.zshrc; ln -s /root/.config/.zshrc /root/.zshrc.local;
-RUN echo "rvm_silence_path_mismatch_check_flag=1" >> /root/.rvmrc
-RUN git config --global core.editor "code --wait"; \
-    git config --global init.defaultBranch main
-# end
 
-
-# ############### disabled
-# # # docker in docker
-# # RUN yes | pacman -S docker &&\
-# # 		mkdir -p /etc/docker &&\
-# # 		echo '{"registry-mirrors": ["http://f1361db2.m.daocloud.io"]}' > /etc/docker/daemon.json
-
-# # Rust
-# # WORKDIR /tmp
-# # ADD .cargo.cn.config /root/.cargo/config
-# # ENV RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
-# # ENV RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
-# # ENV CARGO_HTTP_MULTIPLEXING=false
-# # ENV PATH="/root/.cargo/bin:${PATH}"
-# # RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
-# # end
-
-# # Java
-# # RUN yes | pacman -S jre-openjdk-headless jdk-openjdk
-# # ENV JAVA_HOME=/usr/lib/jvm/default/
-# # ENV PATH=$JAVA_HOME/bin:$PATH
-# # end
-
-# # neovim
-# # RUN git clone --depth=1 https://github.com/frankfang/nvim-config.git /root/.config/nvim/ &&\
-# # 		git clone --depth=1 https://github.com/wbthomason/packer.nvim /root/.local/share/nvim/site/pack/packer/opt/packer.nvim &&\
-# # 		git clone --depth=1 https://github.com/navarasu/onedark.nvim.git /root/.local/share/nvim/site/pack/packer/opt/onedark.nvim &&\
-# # 		git clone --depth=1 https://hub.fastgit.org/lifepillar/vim-gruvbox8 /root/.local/share/nvim/site/pack/packer/opt/vim-gruvbox8 &&\
-# # 		git clone --depth=1 https://hub.fastgit.org/sainnhe/edge /root/.local/share/nvim/site/pack/packer/opt/edge &&\
-# # 		git clone --depth=1 https://hub.fastgit.org/sainnhe/sonokai /root/.local/share/nvim/site/pack/packer/opt/sonokai &&\
-# # 		git clone --depth=1 https://hub.fastgit.org/sainnhe/gruvbox-material /root/.local/share/nvim/site/pack/packer/opt/gruvbox-material &&\
-# # 		git clone --depth=1 https://hub.fastgit.org/shaunsingh/nord.nvim /root/.local/share/nvim/site/pack/packer/opt/nord.nvim &&\
-# # 		git clone --depth=1 https://hub.fastgit.org/NTBBloodbath/doom-one.nvim /root/.local/share/nvim/site/pack/packer/opt/doom-one.nvim &&\
-# # 		git clone --depth=1 https://hub.fastgit.org/sainnhe/everforest /root/.local/share/nvim/site/pack/packer/opt/everforest &&\
-# # 		git clone --depth=1 https://hub.fastgit.org/EdenEast/nightfox.nvim /root/.local/share/nvim/site/pack/packer/opt/nightfox.nvim &&\
-# # 		pip install -U pynvim &&\
-# # 		pip install 'python-lsp-server[all]' pylsp-mypy pyls-isort vim-vint &&\
-# # 	  yarn global add vim-language-server && \
-# # 		yes | pacman -S ripgrep
-# # RUN nvim +PackerSync +30sleep +qall
-# # # end
-
-# # # Python 3 and pip
-# # ENV PYTHONUNBUFFERED=1
-# # ENV PATH="/root/.local/bin:$PATH"
-# # ADD pip.cn.conf /root/.config/pip/pip.conf
-# # RUN python -m ensurepip &&\
-# # 	python -m pip install --no-cache --upgrade pip setuptools wheel
-# # # end
