@@ -113,3 +113,8 @@ RUN git config --global core.editor "code --wait"; \
     git config --global init.defaultBranch main
 # end
 
+# dockerd
+RUN yes | pacman -S docker &&\
+		mkdir -p /etc/docker &&\
+		echo '{"registry-mirrors": ["http://f1361db2.m.daocloud.io"] }' > /etc/docker/daemon.json
+# end
